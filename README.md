@@ -34,12 +34,14 @@ This project develops a predictive disease model using machine learning to impro
 3. **EDA**: Visualizing and analyzing data.
 4. **Statistical Analysis**: Correlation and significance testing.
 5. **Machine Learning**: Model training, evaluation, and tuning.
-6. **SHAP Analysis**: Interpreting model predictions with SHAP.
-
+6. 
 ## Results and Insights
 
 The analysis provides insights into disease prediction factors. Statistical analysis identifies significant features, while SHAP values explain model predictions, enhancing interpretability and trustworthiness.
 
 ## Conclusion
 
-This project showcases the use of statistical analysis, machine learning, and SHAP for disease prediction and effective health insurance management. The techniques are applicable to other domains requiring model interpretabilit.
+This project showcases the use of statistical analysis, machine learning, for disease prediction and effective health insurance management. The techniques are applicable to other domains requiring model interpretabilit.
+The best model accuracy achieved is 84.3% using the Random Forest with upscaled Boruta features. The highest
+True Positive Rate is 0.7903 and True Negative Rate is 0.8796, both achieved by the KNN model with upscaled CFS
+features. A total of 36 models were evaluated to find the most effective method. 
