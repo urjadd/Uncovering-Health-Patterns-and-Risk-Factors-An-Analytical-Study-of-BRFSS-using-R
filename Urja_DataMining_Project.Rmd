@@ -1,0 +1,1771 @@
+---
+title: '**Behavioral Risk Factor Surveillance System (BRFSS) Survey Data (2020)**'
+author:
+- Urja Damodhar (urjadd@gmail.com)
+output:
+  pdf_document:
+    latex_engine: xelatex
+    keep_tex: yes
+  word_document: default
+header-includes:
+- \usepackage{graphicx}
+- \usepackage[absolute,overlay]{textpos}
+---
+
+\pagenumbering{gobble}
+
+
+
+# Behavioral Risk Factor Surveillance System (BRFSS) 
+
+- The Behavioral Risk Factor Surveillance System (BRFSS) is a collaborative project between all of the states in the United States and participating US territories and the Centers for Disease Control and Prevention (CDC).
+
+- The BRFSS is a powerful source of data for public health and research communities, offering insights into health trends, risk factors, and the prevalence of certain health behaviors and conditions across different states and demographic groups.
+
+- The BRFSS is administered and supported by CDC's Population Health Surveillance Branch, under the Division of Population Health at CDC’s National Center for Chronic Disease Prevention and Health Promotion. 
+
+- The BRFSS is a system of ongoing health-related telephone surveys designed to collect data on health-related risk behaviors, chronic health conditions, and use of preventive services from the noninstitutionalized adult population (≥ 18 years) residing in the United States.
+
+- BRFSS now collects data in all 50 states as well as the District of Columbia and participating US territories. During 2020, all 50 states, the District of Columbia, Guam, and Puerto Rico collected BRFSS data. 
+
+- The term “state” is used to refer to all areas participating in the BRFSS, including the District of Columbia, Guam, and the Commonwealth of Puerto Rico.
+
+- BRFSS’s objective is to collect uniform state-specific data on health risk behaviors, chronic diseases and conditions, access to health care, and use of preventive health services related to the leading causes of death and disability in the United States.
+
+- BRFSS assesses various health-related factors including health status, healthy days,exercises,inadequate sleep,chronic health conditions,oral health,tobacco use,cancer screenings, and health-care access.
+
+- Some topics may include prediabetes and diabetes,cognitive decline,electronic cigarettes,cancer survivorship (type,treatment,pain management), and sexual orientation/gender identity (SOGI).
+
+- BRFSS conducts both landline and cellular telephone-based surveys since 2011. All responses are self-reported; proxy interviews are not conducted. Interviewers collect data from a randomly selected adult in a household for landline telephone surveys, and from adults answering cellular telephones in a private resoidence or college housing for cellular telephone surveys.
+
+- Beginning in 2014, all adults contacted through their cellular telephone were eligible, regardless of their landline phone use, resulting in complete overlap between the two methods.
+
+- The 2020 BRFSS raking method includes categories such as age by gender,detailed race and ethnicity groups,education levels, marital status, regions within states, gender by race and ethnicity, telephone source, renter or owner status, and age groups by race and ethnicity.
+
+## BRFSS Health Survey Insights
+
+- This data  aims to survey individual's health behaviors, chronic health conditions, and use of preventive services. 
+
+- Data contains 5000 tuples (rows) and 276 attributes (columns) wherein each tuple represents a person, with various attributes detailing their responses from the  2020 survey data.
+
+- The Class attribute indicates whether a person has experienced a depressive disorder ( Y for yes, N for no).This is the target variable that provides a binary outcome based on the respondent's experiences with depressive disorders, making it a critical measure for public health interventions and mental health resource allocation. 
+
+- Geographic and Temporal Information : Attribiutes like X_STATE, FMONTH, IDATE, IMONTH, IDAY, and IYEAR indicate the state from which the data was collected, the month of the survey, the interview date, and the year.This temporal information is crucial for tracking health trends over time and understanding seasonal variations in health behaviors.
+
+- Demographic Attributes : These include age,sex,race/ethnicity,education, and income. Understanding the distribution of health behaviors and conditions across different demographic groups helps in identifying at-risk populations and tailoring public health interventions.
+
+- Health Bheavior Attributes : Attributes related to diet,physical activity, smoking and alcohol use fall into this category. These behaviors are key risk factors for chroniic diseases like heart disease, diabetes, and certain cancers.
+
+- Health Outcome Attributes : Chronic health conditions such as hypertension, diabetes,cancer, and mental health conditions including **depressive disorders** are. captured here. These outcomes are essential for monitoring the public health burden of chronic diseases and evaluating the need for healthcare services.
+
+- Envionmental and Social Determinants : Some attributes may relate to enviornmental factors (eg employment status, social support networks) which are increasingly recognised for their impact on health outcomes.
+
+
+**Goal : To build multiple classification models, which would predict a person with a depressive disorder, compare their performance, and select the "best" model.**
+
+### Data Mining procedures 
+
+1. Data Analysis (Preliminary Analysis): 
+
+Summary of Data: Provides a high-level overview, including measures of central tendency (mean, median), dispersion (variance, standard deviation), and range for numerical columns, along with counts and frequencies for categorical data. A step, crucial for understanding the dataset's characteristics and guiding further preprocessing.
+
+Missing Values Analysis: Identifying missing values and their proportions helps in deciding how to handle them, ensuring the models trained on this data are not biased or inaccurate due to missing information.
+
+Removal of Columns with ≥ 40% Missing Values: Columns with a large proportion of missing data can introduce bias and variance in predictions. Removing these columns ensures the reliability of the models trained.
+
+2. Data Imputation : 
+
+Numerical Data: Replacing missing values with the median helps maintain the central tendency without being affected by outliers.
+
+Categorical Data: Imputing missing values with the mode (most frequent category) ensures the categorical distributions remain relatively unchanged.
+
+3. Unique Values Analysis : 
+
+Removal of Columns with Unique Values = 1: Such columns do not vary across the dataset, providing no useful information for distinguishing between records in machine learning models.
+
+4. Outliers and Low Variance Filters :
+
+Outliers Identification and Handling: Outliers can skew the data, leading to inaccurate models. Identifying and handling them (e.g., through capping or transformation) is crucial.
+
+Low Variance Columns Removal: Columns with variance below a certain threshold (e.g., 0.1) are not informative enough for models, as they do not significantly vary across the dataset.
+
+5. Correlation Analysis :
+
+Highly Correlated Columns Removal: Highly correlated features provide redundant information, which can lead to multicollinearity problems in certain models, reducing their generalizability.
+
+6. Data Scaling :
+
+Ensures that all features contribute equally to the model's performance by bringing them to a similar scale, important for models sensitive to feature magnitude (e.g., SVM, KNN).
+
+7. Feature Encoding : 
+
+Converts categorical variables into a format that can be provided to ML algorithms to do proper training.
+
+8. Train-Test Split (80-20) :
+
+Separates data into training and testing sets to ensure the model is trained on one subset of the data and evaluated on a separate set, providing a measure of its generalization capability.
+
+9. Balancing the Dataset (Upsampling/Downsampling) :
+
+Balances the classes in the dataset to prevent model bias towards the majority class, essential for classification tasks where class distribution is skewed.
+
+10. Feature Selection Methods :
+
+Boruta, Random Forest, CFS: These methods help identify the most informative features, reducing dimensionality and improving model performance.
+
+Boruta: An all-relevant feature selection method.
+
+Random Forest: Can rank features by their importance in predicting the target variable.
+
+CFS: Selects features based on their correlation with target variable while minimizing redundancy between features.
+
+11. Model Training and Evaluation :
+
+Training various models (Decision Trees, Logistic Regression, SVM, KNN, Random Forest, Naive Bayes, Adaboost) on the selected features to identify the one(s) offering the best performance in terms of accuracy and other metrics (precision, recall, F1 score, etc.).
+
+Significance of Chosen Procedures :
+
+Each of these procedures plays a vital role in the data preparation, feature selection, model training, and evaluation phases of the data mining process. The chosen methods ensure that the data fed into the models is of high quality, relevant, and adequately preprocessed, enhancing the models' ability to learn and make accurate predictions. By systematically addressing issues like missing data, outliers, and irrelevant features, the process significantly increases the likelihood of developing robust, effective models.
+
+### Analyzing data
+
+- Library "readr" is a library within the tidyverse ecosystem for efficient reading of flat-file data, while "tidyverse" is a collection of R packages designed for data science, emphasizing tidy data principles and consistent workflows.
+
+
+```{r}
+# Loading dataset & necessary libraries
+library(readr)
+library(tidyverse)
+
+data = read.csv("D:/Projects/BRFSS/project_dataset_5K.csv")
+
+dim(data)
+head(data)
+summary(data)
+
+```
+
+
+### Missing Values
+
+- In order to analyze the data ,the number and percentage of missing values are observed in each column.
+
+
+- It identifies columns with a high percentage of missing values (greater than or equal to 40%) then prints the percentage of missing values and names of columns with a high percentage of missing values.
+
+
+- It finally creates a new dataset with columns removed if they have a high percentage of missing values.
+
+
+```{r}
+
+# Missing values
+missing_values = colSums(is.na(data))
+
+# Missing values percentage per column
+missing_values_percentage = sapply(data,function(x) mean(is.na(x))) *100
+
+# Columns with greater than or  equal to 40% missing values
+missing_40 = names(missing_values_percentage[missing_values_percentage >= 40])
+
+print(missing_values_percentage)
+print(missing_40)
+
+missing_counts = data.frame(missing_values = missing_values,percentage = missing_values_percentage)
+missing_counts
+
+# Deletion of columns 
+data_c = data[, !(names(data) %in% missing_40)]
+
+# Columns with 100% missing values
+missing_100 = names(missing_values_percentage[missing_values_percentage == 100])
+
+# Remove columns with 100% missing values
+data_c = data_c[, !(names(data_c) %in% missing_100)]
+
+
+```
+
+### Imputation
+
+- Missing data can lead to incomplete records which can hinder the analysis process and affect the accuracy of statistical models. Data imputation helps in filling those missing values making the dataset more complete.
+
+
+- Here it first identifies numerical and categorical columns using the "is.numeric" and "is.factor/is.character" functions respectively.The "sapply" function iterates over each column to check if it is numeric or categorical.
+
+
+- The missing values in numerical columns are thereby filled with median and categorical columns with mode. 
+
+
+- The median provides a more robust estimate of central tendency in the presence of outliers and maintains the same scale as the original data important for preserving the distribution characteristics of the variable.
+
+
+- Categorical variables have distinct categories or groups making it inappropriate to calculate means or medians, therefore mode is used for imputing missing categorical values.
+
+
+```{r}
+
+
+# For remaining columns performing imputation
+# Numerical and Categorical columns
+
+numeric_cols = sapply(data_c,is.numeric)
+print(numeric_cols)
+
+categorical_cols = sapply(data_c,function(x) is.factor(x) | is.character(x))
+print(categorical_cols)
+
+# Imputation
+
+# Numerical columns,filling missing values with median
+data_c[sapply(data_c,is.numeric)] = lapply(data_c[sapply(data_c,is.numeric)], function(x) ifelse(is.na(x), median(x,na.rm = TRUE),x))
+
+# Categorical columns,filling missing values with mode
+mode = function(m){
+  uniqm = unique(m)
+  uniqm[which.max(tabulate(match(m,uniqm)))]
+}
+data_c[sapply(data_c,is.factor)] = lapply(data_c[sapply(data_c,is.factor)], function(x) ifelse(is.na(x),mode(x),x))
+
+
+
+```
+
+### Unique values
+
+- Computing the count of unique values for each column helps in understanding the diversity and distribution of data within each feature helpful in data exploration and preprocessing tasks like identifying categorical variables or detecting potential data quality issues such as duplicate entries.
+
+
+- Here the unique values for each column have been calculated and those with unique value "1" are deleted, finally the remaining missing values have been observed as well as the shape of the data.
+
+
+
+```{r}
+# Unique value count for each column
+unique_value_count = function(x){
+  sapply(x, function(column) length(unique(column)))
+}
+
+# Unique value count fopr each column
+unique_count = unique_value_count(data_c)
+print(unique_count)
+
+# Columns with unique count 1 and deleting them
+unique_col_1 = names(unique_count[unique_count == 1])
+data_c = data_c[, !names(data_c) %in% unique_col_1 ]
+
+# Remaining missing values 
+remain_missing_values = sum(is.na(data_c))
+remain_missing_values
+
+dim(data_c)
+
+
+```
+
+
+### Outliers
+
+- Outliers are data points that significantly deviate from the rest of the dataset, often lying at an abnormal distance from other observations.
+
+
+- It detects outliers in the numerical columns of the dataset by using IQR method.
+For each numerical column it computes the first quartile (Q1), third quartile (Q3), and interquartile range (IQR). It determines the lower and upper bounds using the IQR rule.
+
+
+- It identifies rows where values are below the lower bound or above the upper bound, indicating outliers.
+
+
+- It finally stores the count of outliers for the current column in outliers_summary.
+
+
+```{r}
+
+# Outliers
+# Update column type indicators
+numeric_cols = sapply(data_c,is.numeric)
+categorical_cols = sapply(data_c,function(x) is.factor(x) | is.character(x))
+
+# Ensure that there is atleast one numeric column
+if (!any(numeric_cols)){
+  stop("No numeric columns found in the data frame")
+}
+
+# Initialise list to store outliers summary
+outliers_summary = list()
+
+# Process only numeric columns
+for (col in names(data_c)[numeric_cols]){
+  Q1 = quantile(data_c[[col]],0.25,na.rm= TRUE)
+  Q3 = quantile(data_c[[col]],0.75,na.rm= TRUE)
+  IQR = Q3 - Q1
+  lower_bound = Q1 -1.5 * IQR
+  upper_bound = Q3 + 1.5 * IQR
+  
+  # Select rows that are outliers
+  outliers = data_c[data_c[[col]] < lower_bound | data_c[[col]] > upper_bound,]
+  
+  # Store the count of outliers for the column
+  outliers_summary[[col]] = nrow(outliers)
+}
+
+outliers_summary
+dim(data_c)
+
+# `outliers_summary` now contains the counts of outliers for each numeric column
+
+
+```
+
+
+
+### Low variance 
+
+- Low variance columns often contain little to no information because they do not change much across different observations by removing them will help simplify the dataset, reduce noise, and improve the performance of machine learning algorithms by focusing on the most informative features. Additionally, keeping low variance columns can sometimes lead to overfitting, especially in models sensitive to multicollinearity.
+
+
+- Here it calculates the variance for numerical columns and identifies columns with low variance less than 0.1 thereby removing them.
+
+
+
+```{r}
+
+# Calculate variance for numeric columns only
+numeric_variances = sapply(data_c[numeric_cols], var, na.rm = TRUE)
+
+# Identify columns with low variance (e.g., variance < 0.1)
+low_variance_cols = names(numeric_variances[numeric_variances < 0.1])
+
+# Remove low variance columns
+if(length(low_variance_cols) > 0) {
+  data_c = data_c[, !(names(data_c) %in% low_variance_cols)]
+} else {
+  message("No low variance columns to remove.")
+}
+
+
+```
+
+
+
+### Correlation matrix
+
+-  Highly correlated columns can cause multicollinearity issues, where predictors in a regression model are correlated with each other. This can lead to unstable coefficient estimates and reduced interpretability of the model. Removing highly correlated columns helps mitigate multicollinearity and improves the performance and stability of predictive models. The caret package is used here for correlation analysis and identifying highly correlated columns.
+
+
+```{r}
+
+
+library(caret)
+# Re-identify numeric columns in the updated data_c
+numeric_cols = sapply(data_c, is.numeric)
+
+# Compute the correlation matrix for the current set of numeric columns
+# Using names(data_c)[numeric_cols] to correctly subset data_c for numeric columns only
+cor_matrix = cor(data_c[, names(data_c)[numeric_cols]], use = "complete.obs")
+
+
+# Identify pairs of highly correlated columns (e.g., correlation > 0.75)
+high_cor_pairs = findCorrelation(cor_matrix, cutoff = 0.75, verbose = TRUE)
+
+# Plot the correlation matrix as a heatmap
+heatmap(cor_matrix,symm = TRUE,scale = "none",main = "Correlation matrix")
+
+# Retrieve names of columns to remove
+high_cor_cols = names(data_c[numeric_cols])[high_cor_pairs]
+
+# Remove highly correlated columns
+data_c = data_c[, !(names(data_c) %in% high_cor_cols)]
+dim(data_c)
+
+
+
+```
+
+
+### Data Scaling
+
+-  Data scaling is the process of transforming the values of numeric features in a dataset to a similar scale, often by standardizing or normalizing them. It ensures that all features contribute equally to the analysis, prevents features with large scales from dominating those with smaller scales, and improves the performance and convergence of machine learning algorithms, particularly those based on distance calculations or gradient descent.
+
+
+-  It scales the numeric columns of the dataset using the scale() function. This function standardizes each numeric column by subtracting the mean and dividing by the standard deviation, making the mean of each column 0 and the standard deviation 1.
+Finally, the function returns the scaled dataset.
+
+
+```{r}
+
+# Data Scaling
+
+scale_data = function(data) {
+  numeric_cols = sapply(data, is.numeric)
+  data[numeric_cols] = scale(data[numeric_cols])
+  return(data)
+}
+
+```
+
+
+
+### Feature Encoding
+
+
+-  Feature encoding is the process of converting categorical variables into a numerical format that can be used for machine learning models. 
+
+
+-  It performs one-hot encoding using the model.matrix() function, which converts categorical variables into a binary matrix where each category becomes a binary feature column.
+
+- Finally, it converts the encoded matrix into a data frame data_encoded
+
+
+```{r}
+
+## Feature Encoding
+
+# Get the names of all columns except the last one
+cols_to_encode = names(data_c)[-ncol(data_c)]
+
+# Construct the formula for encoding
+formula = as.formula(paste("~ ."))
+
+# Perform one-hot encoding
+data_encoded = model.matrix(formula, data = data_c)
+
+# Convert to data frame 
+data_encoded = as.data.frame(data_encoded)
+
+
+
+```
+
+
+```{r}
+
+
+downscale_file_path = "D:/Projects/BRFSS/86 features.csv"
+
+# Save the upsampled dataset to CSV
+write.csv(data_encoded, file = downscale_file_path, row.names = FALSE)
+
+
+```
+
+
+### Train test split
+
+
+- The initial_split() function from the rsample package to split the dataset data_encoded into a training set and a testing set. The parameter prop = 0.8 indicates that 80% of the data will be used for training and the remaining 20% for testing.
+
+- ROSE package, which is used for dealing with imbalanced datasets by generating synthetic minority class examples.
+
+```{r}
+
+
+library(rsample)  
+
+# Initial split
+split = initial_split(data_encoded, prop = 0.8)
+
+# Creating training and testing datasets
+train_set = training(split)
+test_set = testing(split)
+
+# Print the size of train and test datasets
+cat("Size of Train Dataset:", nrow(train_set), "rows\n")
+cat("Size of Test Dataset:", nrow(test_set), "rows\n")
+
+
+library(ROSE)
+str(train_set)
+
+# Remove the explicit '(Intercept)' column from the dataset
+train_set = train_set[, !(names(train_set) %in% "(Intercept)")]
+
+# Target variable
+target_variable_name = names(train_set)[ncol(train_set)]  
+
+# Ensure target variable is a factor
+train_set[[target_variable_name]] = as.factor(train_set[[target_variable_name]])
+
+
+
+
+```
+
+
+### Upsampling and Downsampling (Balancing datasets)
+
+- Upsampling using the ovun.sample function from the ROSE package. It generates synthetic examples for the minority class to balance the class distribution. The resulting upsampled dataset is stored in up_train.
+
+- Downsampling using the ovun.sample function with the method "under". It randomly removes examples from the majority class to balance the class distribution. The resulting downsampled dataset is stored in down_train.
+
+-  Overall, it performs data preprocessing steps to balance the class distribution through upsampling and downsampling and then visualizes the class distribution before saving the balanced datasets to CSV files.
+
+
+
+```{r}
+
+
+# Prepare data for upsampling and downsampling
+features = train_set[, -which(names(train_set) == target_variable_name)]
+target = train_set[[target_variable_name]]
+
+
+# Now, try running ovun.sample again without the explicit intercept
+up_train = ovun.sample(ClassY ~ ., data = train_set, method = "over")$data
+
+# Downsampling
+down_train = ovun.sample(ClassY ~ ., data = train_set, method = "under")$data
+
+# Combining the upsampled and downsampled features and target variable back into data frames
+train_set_balanced_upscale = up_train
+train_set_balanced_downscale = down_train
+
+head(train_set_balanced_upscale,n=1)
+
+library(ggplot2)
+
+# Define a function to create bar plots
+plot_class_distribution = function(data, title) {
+  ggplot(data, aes(x = ClassY)) +
+    geom_bar(fill = "skyblue", color = "black") +
+    labs(title = title, x = "ClassY", y = "Count")
+}
+
+# Plot class distribution for the upsampled dataset
+plot_class_distribution(train_set_balanced_upscale, "Class Distribution (Upsampled)")
+
+# Plot class distribution for the downsampled dataset
+plot_class_distribution(train_set_balanced_downscale, "Class Distribution (Downsampled)")
+
+# Define file paths for saving the CSV files on the desktop
+upscale_file_path = "D:/Projects/BRFSS/train_set_balanced_upscale.csv"
+downscale_file_path = "D:/Projects/BRFSS/train_set_balanced_downscale.csv"
+
+# Save the upsampled dataset to CSV
+write.csv(train_set_balanced_upscale, file = upscale_file_path, row.names = FALSE)
+
+# Save the downsampled dataset to CSV
+write.csv(train_set_balanced_downscale, file = downscale_file_path, row.names = FALSE)
+
+# Upsampling, Downsampling csv files saved successfully
+
+
+```
+
+
+### Feature selection methods : Boruta, Random Forest, ANOVA
+
+
+1. Boruta Feature Selection:
+
+Boruta is a wrapper algorithm built around Random Forests that aims to identify relevant features in a dataset. It works by comparing the importance of features with that of shadow features (randomly shuffled copies of the original features) and determines whether a feature is relevant, irrelevant, or tentative (requires further evaluation).
+
+
+2.  Random Forest Feature Importance:
+
+Random Forests are an ensemble learning method that builds multiple decision trees and merges their predictions. Feature importance in Random Forests is calculated based on how much each feature decreases the impurity (e.g., Gini impurity) when used in decision trees. Higher importance scores indicate more important features.
+
+
+3.  CFS (Correlation based Feature Selection):
+
+CFS is a feature selection technique used to identify and select subsets of features that are highly correlated with the target variable while being minimally correlated with each other. It selects features based on their correlation with target variable while minimizing redundancy between features.
+
+In summary, a comprehensive feature selection approach using Boruta, Random Forest, and CFS methods. It applies these methods to both upsampled and downsampled datasets and prints the selected features for further analysis.
+
+
+
+```{r}
+
+# Feature selection methods
+
+# Load necessary libraries
+
+# 1. Boruta
+
+library(Boruta)
+
+# Boruta Feature Selection
+boruta_feature_selection = function(data) {
+  set.seed(123)
+  boruta_output = Boruta(ClassY ~ ., data = data, doTrace = 0)
+  finalized_features = getSelectedAttributes(boruta_output, withTentative = FALSE)
+  return(data[, c(finalized_features, "ClassY")])
+}
+
+# Apply feature selection to upsampled and downsampled datasets
+upscaled_boruta = boruta_feature_selection(train_set_balanced_upscale)
+downscaled_boruta = boruta_feature_selection(train_set_balanced_downscale)
+
+# Summary of Selected Features
+cat("Boruta Upscaled Top Features:\n")
+print(colnames(upscaled_boruta))
+
+cat("\nBoruta Downscaled Top Features:\n")
+print(colnames(downscaled_boruta))
+
+
+# 2. Random Forest
+
+# Random Forest
+library(randomForest)
+# Random Forest Feature Importance
+random_forest_importance = function(data) {
+  set.seed(123)
+  rf_model = randomForest(ClassY ~ ., data=data, importance=TRUE)
+  importance_scores = importance(rf_model)
+  top_features = names(sort(importance_scores[, 'MeanDecreaseGini'], decreasing = TRUE)[1:10])
+  return(data[, c(top_features, "ClassY")])
+}
+
+upscaled_rf = random_forest_importance(train_set_balanced_upscale)
+downscaled_rf = random_forest_importance(train_set_balanced_downscale)
+
+
+cat("\nRandom Forest Upscaled Top Features:\n")
+print(colnames(upscaled_rf))
+
+cat("\nRandom Forest Downscaled Top Features:\n")
+print(colnames(downscaled_rf))
+
+
+
+# 3. CFS (Correlation based Feature Selection)
+
+library(FSelector)
+
+# Function to perform CFS feature selection
+cfs_feature_selection = function(data) {
+  
+  target_variable = names(data)[ncol(data)]
+  formula = as.formula(paste(target_variable, "~ ."))
+  results = cfs(formula, data)
+  
+  if (is(results, "character")) {
+    selected_features = results
+  } else if (is(results, "subset")) {
+    selected_features = results$variables
+  } else {
+    stop("Unexpected output from cfs function")
+  }
+  
+  return(data[, c(selected_features, target_variable)])
+}
+
+
+upscaled_cfs = cfs_feature_selection(train_set_balanced_upscale)
+downscaled_cfs = cfs_feature_selection(train_set_balanced_downscale)
+
+
+cat("CFS Upscaled Top Features:\n")
+print(colnames(upscaled_cfs))
+
+cat("\nCFS Downscaled Top Features:\n")
+print(colnames(downscaled_cfs))
+
+
+```
+
+
+### Models : Decision trees, Logistic regression,Support Vector Machines,K-Nearest Neighbors,Random Forest,Naive Bayes model & Adaboost
+
+
+- Model Significance :
+
+1. Decision Trees (DT):
+
+Non-parametric supervised learning method used for classification and regression tasks.
+It works by recursively splitting the data into subsets based on the value of a feature that results in the best separation of the target variable.
+Each split is chosen to maximize the purity of the resulting subsets, often measured by metrics like Gini impurity or entropy.
+Easy to understand and interpret, making them suitable for exploratory analysis and decision-making processes.
+Prone to overfitting, especially with deep trees, which can be mitigated through techniques like pruning or using ensemble methods like Random Forests.
+
+2. Logistic Regression (Log/glm):
+
+Parametric statistical model used for binary classification.
+It estimates the probability that a given instance belongs to a particular class using the logistic function (sigmoid).
+Models the relationship between the independent variables (features) and the binary dependent variable (target) using a linear equation.
+Provides interpretable coefficients representing the impact of each feature on the log-odds of the target variable.
+Can be extended to handle multiclass classification using techniques like one-vs-rest or multinomial logistic regression.
+
+3. Support Vector Machines (SVM):
+
+Supervised learning algorithm used for classification, regression, and outlier detection.
+Constructs hyperplanes in a high-dimensional space to separate instances of different classes with the largest possible margin.
+Effective in high-dimensional spaces and capable of capturing complex relationships in data using kernel functions.
+Works well with small to medium-sized datasets and is less affected by the curse of dimensionality.
+Can be sensitive to the choice of kernel and regularization parameters and may require tuning for optimal performance.
+
+4. K-Nearest Neighbors
+
+K-Nearest Neighbors (KNN) model lies in its ability to provide accurate predictions in complex data scenarios without imposing strict assumptions on the data distribution. KNN is flexible, interpretable, and robust to outliers, making it suitable for various applications. Its localized decision-making process and feature scaling insensitivity contribute to its effectiveness across different domains. Additionally, KNN's simplicity and versatility, including its applicability to classification, regression, and clustering tasks, underscore its importance as a valuable tool in machine learning.
+
+
+5. Random Forest (RF):
+
+Ensemble learning method consisting of a collection of decision trees.
+Each tree in the forest is built using a subset of the training data and a random subset of features.
+Combines predictions from individual trees to make final predictions, often through a simple averaging or voting scheme.
+Robust against overfitting due to averaging predictions from multiple trees.
+Provides a measure of feature importance based on how much each feature decreases impurity across all trees.
+
+6. Naive Bayes (NB):
+
+Simple probabilistic classifier based on Bayes' theorem with strong independence assumptions between features.
+Assumes that the effect of a feature on a given class is independent of the values of other features.
+Efficient and fast, especially for large datasets, as it requires minimal computational resources for training and prediction.
+Often used as a baseline model or in scenarios where the independence assumption holds reasonably well, such as text classification tasks.
+
+7. AdaBoost:
+
+Adaptive boosting algorithm that combines multiple weak learners (typically decision trees) into a strong learner.
+Iteratively trains weak learners, assigning higher weights to misclassified instances in each iteration to focus on difficult examples.
+Final prediction is a weighted sum of predictions from individual weak learners, with higher weights assigned to more accurate models.
+Effective in improving the performance of weak models and reducing bias and variance, leading to improved generalization performance.
+Can be sensitive to noisy data and outliers, and may require careful tuning of hyperparameters.
+
+Overall, comprehensive comparison of various machine learning models' performance on different datasets and feature selection techniques.
+
+```{r}
+
+# Models
+
+# 1. Decision Tree Model
+
+
+library(rpart)
+library(ada)
+
+
+# Decision Tree Model
+decision_tree_model = function(train_data, test_data) {
+  # Train decision tree model
+  dt_model = rpart(ClassY ~ ., data = train_data, method = "class")
+  
+  # Predict on test data
+  predictions_dt = predict(dt_model, test_data, type = "class")
+  
+  
+  # Calculate accuracy
+  accuracy_dt = mean(predictions_dt == test_data$ClassY)
+  
+  return(accuracy_dt)
+}
+
+# Apply decision tree model on selected features
+upscaled_boruta_accuracy = decision_tree_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy = decision_tree_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy = decision_tree_model(upscaled_rf, test_set)
+downscaled_rf_accuracy = decision_tree_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy = decision_tree_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy = decision_tree_model(downscaled_cfs, test_set)
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Decision Tree):", upscaled_boruta_accuracy, "\n")
+cat("Downscaled Boruta Accuracy (Decision Tree):", downscaled_boruta_accuracy, "\n")
+cat("Upscaled Random Forest Accuracy (Decision Tree):", upscaled_rf_accuracy, "\n")
+cat("Downscaled Random Forest Accuracy (Decision Tree):", downscaled_rf_accuracy, "\n")
+cat("Upscaled CFS Accuracy (Decision Tree):", upscaled_cfs_accuracy, "\n")
+cat("Downscaled CFS Accuracy (Decision Tree):", downscaled_cfs_accuracy, "\n")
+
+
+
+
+# 2. Logistic Regression Model
+
+# Logistic Regression Model
+logistic_regression_model = function(train_data, test_data) {
+  # Train logistic regression model
+  lr_model = glm(ClassY ~ ., data = train_data, family = "binomial")
+  
+  # Predict on test data
+  predictions_lr = predict(lr_model, newdata = test_data, type = "response")
+  
+  # Convert probabilities to class labels
+  predictions_lr = ifelse(predictions_lr > 0.5, 1, 0)
+  
+  
+  # Calculate accuracy
+  accuracy_lr = mean(predictions_lr == test_data$ClassY)
+  
+  return(accuracy_lr)
+}
+
+# Apply logistic regression model on selected features
+upscaled_boruta_accuracy_l = logistic_regression_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_l = logistic_regression_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_l = logistic_regression_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_l = logistic_regression_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_l = logistic_regression_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_l = logistic_regression_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Logistic Regression):", upscaled_boruta_accuracy_l, "\n")
+cat("Downscaled Boruta Accuracy (Logistic Regression):", downscaled_boruta_accuracy_l, "\n")
+cat("Upscaled Random Forest Accuracy (Logistic Regression):", upscaled_rf_accuracy_l, "\n")
+cat("Downscaled Random Forest Accuracy (Logistic Regression):", downscaled_rf_accuracy_l, "\n")
+cat("Upscaled CFS Accuracy (Logistic Regression):", upscaled_cfs_accuracy_l, "\n")
+cat("Downscaled CFS Accuracy (Logistic Regression):", downscaled_cfs_accuracy_l, "\n")
+
+
+
+# 3. Support Vector Machine (SVM) Model
+
+library(rpart)
+library(ada)
+library(e1071)
+# Support Vector Machine (SVM) Model
+svm_model = function(train_data, test_data) {
+  # Train SVM model
+  svm_model = svm(ClassY ~ ., data = train_data, kernel = "linear")
+  
+  # Predict on test data
+  predictions_svm = predict(svm_model, newdata = test_data)
+  
+  
+  # Calculate accuracy
+  accuracy_svm = mean(predictions_svm == test_data$ClassY)
+  
+  return(accuracy_svm)
+}
+
+# Apply svm model on selected features
+upscaled_boruta_accuracy_s = svm_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_s = svm_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_s = svm_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_s = svm_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_s = svm_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_s = svm_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (SVM):", upscaled_boruta_accuracy_s, "\n")
+cat("Downscaled Boruta Accuracy (SVM):", downscaled_boruta_accuracy_s, "\n")
+cat("Upscaled Random Forest Accuracy (SVM):", upscaled_rf_accuracy_s, "\n")
+cat("Downscaled Random Forest Accuracy (SVM):", downscaled_rf_accuracy_s, "\n")
+cat("Upscaled CFS Accuracy (SVM):", upscaled_cfs_accuracy_s, "\n")
+cat("Downscaled CFS Accuracy (SVM):", downscaled_cfs_accuracy_s, "\n")
+
+
+# 4. K-Nearest Neighbors (KNN) Model
+
+
+# K-Nearest Neighbors (KNN) Model
+
+
+library(class)
+
+# K-Nearest Neighbors (KNN) Model
+knn_model = function(train_data, test_data) {
+  # Select features common to both train and test datasets
+  common_features = intersect(names(train_data), names(test_data))
+  
+  # Train KNN model
+  knn_model = knn(train = train_data[, common_features], 
+                  test = test_data[, common_features], 
+                  cl = train_data$ClassY, 
+                  k = 5)
+  
+  # Calculate accuracy
+  accuracy_knn = mean(knn_model == test_data$ClassY)
+  
+  return(accuracy_knn)
+}
+
+
+# Apply knn model on selected features
+upscaled_boruta_accuracy_k = knn_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_k = knn_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_k = knn_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_k = knn_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_k = knn_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_k = knn_model(downscaled_cfs, test_set)
+
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (kNN):", upscaled_boruta_accuracy_k, "\n")
+cat("Downscaled Boruta Accuracy (kNN):", downscaled_boruta_accuracy_k, "\n")
+cat("Upscaled Random Forest Accuracy (kNN):", upscaled_rf_accuracy_k, "\n")
+cat("Downscaled Random Forest Accuracy (kNN):", downscaled_rf_accuracy_k, "\n")
+cat("Upscaled CFS (kNN):", upscaled_cfs_accuracy_k, "\n")
+cat("Downscaled CFS Accuracy (kNN):", downscaled_cfs_accuracy_k, "\n")
+
+
+
+# 5. Random Forest Model
+
+# Random Forest Model
+
+random_forest_model = function(train_data, test_data) {
+  # Train Random Forest model
+  rf_model = randomForest(ClassY ~ ., data = train_data, importance = TRUE)
+  
+  # Predict on test data
+  predictions_rf = predict(rf_model, newdata = test_data)
+  
+  # Calculate accuracy
+  accuracy_rf = mean(predictions_rf == test_data$ClassY)
+  
+  return(accuracy_rf)
+}
+
+# Apply random forest model on selected features
+upscaled_boruta_accuracy_rf = random_forest_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_rf = random_forest_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_rf = random_forest_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_rf = random_forest_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_rf = random_forest_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_rf = random_forest_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Random Forest):", upscaled_boruta_accuracy_rf, "\n")
+cat("Downscaled Boruta Accuracy (Random Forest):", downscaled_boruta_accuracy_rf, "\n")
+cat("Upscaled Random Forest Accuracy (Random Forest):", upscaled_rf_accuracy_rf, "\n")
+cat("Downscaled Random Forest Accuracy (Random Forest):", downscaled_rf_accuracy_rf, "\n")
+cat("Upscaled CFS Accuracy (Random Forest):", upscaled_cfs_accuracy_rf, "\n")
+cat("Downscaled CFS Accuracy (Random Forest):", downscaled_cfs_accuracy_rf, "\n")
+
+
+# 6. Naive Bayes Model
+
+# Naive Bayes Model
+
+naive_bayes_model = function(train_data, test_data) {
+  # Train Naive Bayes model
+  nb_model = naiveBayes(ClassY ~ ., data = train_data)
+  
+  # Predict on test data
+  predictions_nb = predict(nb_model, newdata = test_data)
+  
+  # Calculate accuracy
+  accuracy_nb = mean(predictions_nb == test_data$ClassY)
+  
+  return(accuracy_nb)
+}
+
+# Apply Naive Bayes model on selected features
+upscaled_boruta_accuracy_nb = naive_bayes_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_nb = naive_bayes_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_nb = naive_bayes_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_nb = naive_bayes_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_nb = naive_bayes_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_nb = naive_bayes_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Naive Bayes):", upscaled_boruta_accuracy_nb, "\n")
+cat("Downscaled Boruta Accuracy (Naive Bayes):", downscaled_boruta_accuracy_nb, "\n")
+cat("Upscaled Random Forest Accuracy (Naive Bayes):", upscaled_rf_accuracy_nb, "\n")
+cat("Downscaled Random Forest Accuracy (Naive Bayes):", downscaled_rf_accuracy_nb, "\n")
+cat("Upscaled CFS Accuracy (Naive Bayes):", upscaled_cfs_accuracy_nb, "\n")
+cat("Downscaled CFS Accuracy (Naive Bayes):", downscaled_cfs_accuracy_nb, "\n")
+
+
+
+# 7. AdaBoost Model
+
+# AdaBoost Model
+adaboost_model = function(train_data, test_data) {
+  # Train AdaBoost model
+  adaboost_model = ada(ClassY ~ ., data = train_data)
+  
+  # Predict on test data
+  predictions_ad = predict(adaboost_model, newdata = test_data)
+  
+  
+  # Calculate accuracy
+  accuracy_ad = mean(predictions_ad == test_data$ClassY)
+  
+  return(accuracy_ad)
+}
+
+# Apply AdaBoost model on selected features
+upscaled_boruta_accuracy_adaboost = adaboost_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_adaboost = adaboost_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_adaboost = adaboost_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_adaboost = adaboost_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_adaboost = adaboost_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_adaboost = adaboost_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (AdaBoost):", upscaled_boruta_accuracy_adaboost, "\n")
+cat("Downscaled Boruta Accuracy (AdaBoost):", downscaled_boruta_accuracy_adaboost, "\n")
+cat("Upscaled Random Forest Accuracy (AdaBoost):", upscaled_rf_accuracy_adaboost, "\n")
+cat("Downscaled Random Forest Accuracy (AdaBoost):", downscaled_rf_accuracy_adaboost, "\n")
+cat("Upscaled CFS Accuracy (AdaBoost):", upscaled_cfs_accuracy_adaboost, "\n")
+cat("Downscaled CFS Accuracy (AdaBoost):", downscaled_cfs_accuracy_adaboost, "\n")
+
+
+
+```
+
+
+
+### Decision tree performance measures
+
+```{r}
+
+# Performance Measures of Models
+
+# 1. Decision Tree Performance metrics
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Decision Tree Model
+decision_tree_model = function(train_data, test_data) {
+  # Train decision tree model
+  dt_model = rpart(ClassY ~ ., data = train_data, method = "class")
+  
+  # Predict on test data
+  predictions_dt = predict(dt_model, test_data, type = "class")
+  
+  actual = test_data$ClassY
+  predicted = predictions_dt
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  # Extract TP, TN, FP, and FN
+  # This extraction method assumes a binary classification with specific class naming.
+  
+  TP = conf_matrix[2, 2] 
+  TN = conf_matrix[1, 1] 
+  FP = conf_matrix[1, 2]
+  FN = conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_dt = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_dt))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_dt - 0.5) / (1 - 0.5) 
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_dt)
+}
+
+# Apply decision tree model on selected features
+upscaled_boruta_accuracy = decision_tree_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy = decision_tree_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy = decision_tree_model(upscaled_rf, test_set)
+downscaled_rf_accuracy = decision_tree_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy = decision_tree_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy = decision_tree_model(downscaled_cfs, test_set)
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Decision Tree):", upscaled_boruta_accuracy, "\n")
+cat("Downscaled Boruta Accuracy (Decision Tree):", downscaled_boruta_accuracy, "\n")
+cat("Upscaled Random Forest Accuracy (Decision Tree):", upscaled_rf_accuracy, "\n")
+cat("Downscaled Random Forest Accuracy (Decision Tree):", downscaled_rf_accuracy, "\n")
+cat("Upscaled CFS Accuracy (Decision Tree):", upscaled_cfs_accuracy, "\n")
+cat("Downscaled CFS Accuracy (Decision Tree):", downscaled_cfs_accuracy, "\n")
+
+
+
+```
+
+
+### Logistic regression performance measures
+
+```{r}
+
+# 2. Logistic Regression Performance metrics
+
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Logistic Regression Model
+logistic_regression_model = function(train_data, test_data) {
+  
+  lr_model = glm(ClassY ~ ., data = train_data, family = "binomial")
+  
+  # Predict on test data
+  predictions_lr = predict(lr_model, newdata = test_data, type = "response")
+  
+  # Convert probabilities to class labels
+  predictions_lr = ifelse(predictions_lr > 0.5, 1, 0)
+  
+  actual = test_data$ClassY
+  predicted = predictions_lr
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP = conf_matrix[2, 2] 
+  TN = conf_matrix[1, 1] 
+  FP = conf_matrix[1, 2]
+  FN = conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_lr = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_lr))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_lr - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_lr)
+}
+
+# Apply logistic regression model on selected features
+upscaled_boruta_accuracy_l = logistic_regression_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_l = logistic_regression_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_l = logistic_regression_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_l = logistic_regression_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_l = logistic_regression_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_l = logistic_regression_model(downscaled_cfs, test_set)
+
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Logistic Regression):", upscaled_boruta_accuracy_l, "\n")
+cat("Downscaled Boruta Accuracy (Logistic Regression):", downscaled_boruta_accuracy_l, "\n")
+cat("Upscaled Random Forest Accuracy (Logistic Regression):", upscaled_rf_accuracy_l, "\n")
+cat("Downscaled Random Forest Accuracy (Logistic Regression):", downscaled_rf_accuracy_l, "\n")
+cat("Upscaled CFS Accuracy (Logistic Regression):", upscaled_cfs_accuracy_l, "\n")
+cat("Downscaled CFS Accuracy (Logistic Regression):", downscaled_cfs_accuracy_l, "\n")
+
+
+
+
+```
+
+
+### SVM performance measures
+
+
+```{r}
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Support Vector Machine Model
+svm_model = function(train_data, test_data) {
+  
+  svm_model = svm(ClassY ~ ., data = train_data, kernel = "linear")
+  
+  
+  predictions_svm = predict(svm_model, newdata = test_data)
+  
+  
+  actual = test_data$ClassY
+  predicted = predictions_svm
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP <- conf_matrix[2, 2] 
+  TN <- conf_matrix[1, 1] 
+  FP <- conf_matrix[1, 2]
+  FN <- conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_svm = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_svm))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_svm - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_svm)
+}
+
+# Apply svm model on selected features
+upscaled_boruta_accuracy_s = svm_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_s = svm_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_s = svm_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_s = svm_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_s = svm_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_s = svm_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (SVM):", upscaled_boruta_accuracy_s, "\n")
+cat("Downscaled Boruta Accuracy (SVM):", downscaled_boruta_accuracy_s, "\n")
+cat("Upscaled Random Forest Accuracy (SVM):", upscaled_rf_accuracy_s, "\n")
+cat("Downscaled Random Forest Accuracy (SVM):", downscaled_rf_accuracy_s, "\n")
+cat("Upscaled CFS Accuracy (SVM):", upscaled_cfs_accuracy_s, "\n")
+cat("Downscaled CFS Accuracy (SVM):", downscaled_cfs_accuracy_s, "\n")
+
+
+
+```
+
+
+### kNN performance measures
+
+```{r}
+
+# 4. kNN
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# K-Nearest Neighbors  Model
+knn_model = function(train_data, test_data) {
+  
+  # Select features common to both train and test datasets
+  common_features = intersect(names(train_data), names(test_data))
+  
+  # Train KNN model
+  knn_model = knn(train = train_data[, common_features], 
+                  test = test_data[, common_features], 
+                  cl = train_data$ClassY, 
+                  k = 5)
+  
+  actual = test_data$ClassY
+  predicted = knn_model
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP <- conf_matrix[2, 2] 
+  TN <- conf_matrix[1, 1] 
+  FP <- conf_matrix[1, 2]
+  FN <- conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_knn = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_knn))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_knn - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_knn)
+}
+# Apply knn model on selected features
+upscaled_boruta_accuracy_k = knn_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_k = knn_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_k = knn_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_k = knn_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_k = knn_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_k = knn_model(downscaled_cfs, test_set)
+
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (kNN):", upscaled_boruta_accuracy_k, "\n")
+cat("Downscaled Boruta Accuracy (kNN):", downscaled_boruta_accuracy_k, "\n")
+cat("Upscaled Random Forest Accuracy (kNN):", upscaled_rf_accuracy_k, "\n")
+cat("Downscaled Random Forest Accuracy (kNN):", downscaled_rf_accuracy_k, "\n")
+cat("Upscaled CFS (kNN):", upscaled_cfs_accuracy_k, "\n")
+cat("Downscaled CFS Accuracy (kNN):", downscaled_cfs_accuracy_k, "\n")
+
+
+
+```
+
+
+### Random Forest Performance measures
+
+```{r}
+
+# 5. Random Forest Performance Metrics
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Random Forest Model
+rf_model = function(train_data, test_data) {
+  
+  # Train Random Forest model
+  rf_model = randomForest(ClassY ~ ., data = train_data, importance = TRUE)
+  
+  # Predict on test data
+  predictions_rf = predict(rf_model, newdata = test_data)
+  
+  
+  actual = test_data$ClassY
+  predicted = predictions_rf
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP <- conf_matrix[2, 2] 
+  TN <- conf_matrix[1, 1] 
+  FP <- conf_matrix[1, 2]
+  FN <- conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_rf = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_rf))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_rf - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_rf)
+}
+
+
+# Apply random forest model on selected features
+upscaled_boruta_accuracy_rf = random_forest_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_rf = random_forest_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_rf = random_forest_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_rf = random_forest_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_rf = random_forest_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_rf = random_forest_model(downscaled_cfs, test_set)
+
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Random Forest):", upscaled_boruta_accuracy_rf, "\n")
+cat("Downscaled Boruta Accuracy (Random Forest):", downscaled_boruta_accuracy_rf, "\n")
+cat("Upscaled Random Forest Accuracy (Random Forest):", upscaled_rf_accuracy_rf, "\n")
+cat("Downscaled Random Forest Accuracy (Random Forest):", downscaled_rf_accuracy_rf, "\n")
+cat("Upscaled CFS Accuracy (Random Forest):", upscaled_cfs_accuracy_rf, "\n")
+cat("Downscaled CFS Accuracy (Random Forest):", downscaled_cfs_accuracy_rf, "\n")
+
+
+
+```
+
+### Naive Bayes Performance measures
+
+
+```{r}
+
+# 6. Naive Bayes
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Naive Bayes Model
+nb_model = function(train_data, test_data) {
+  
+  # Train Naive Bayes model
+  nb_model = naiveBayes(ClassY ~ ., data = train_data)
+  
+  # Predict on test data
+  predictions_nb = predict(nb_model, newdata = test_data)
+  
+  
+  actual = test_data$ClassY
+  predicted = predictions_nb
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP <- conf_matrix[2, 2] 
+  TN <- conf_matrix[1, 1] 
+  FP <- conf_matrix[1, 2]
+  FN <- conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_nb = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_nb))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_nb - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_nb)
+}
+
+# Apply Naive Bayes model on selected features
+upscaled_boruta_accuracy_nb = naive_bayes_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_nb = naive_bayes_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_nb = naive_bayes_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_nb = naive_bayes_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_nb = naive_bayes_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_nb = naive_bayes_model(downscaled_cfs, test_set)
+
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (Naive Bayes):", upscaled_boruta_accuracy_nb, "\n")
+cat("Downscaled Boruta Accuracy (Naive Bayes):", downscaled_boruta_accuracy_nb, "\n")
+cat("Upscaled Random Forest Accuracy (Naive Bayes):", upscaled_rf_accuracy_nb, "\n")
+cat("Downscaled Random Forest Accuracy (Naive Bayes):", downscaled_rf_accuracy_nb, "\n")
+cat("Upscaled CFS Accuracy (Naive Bayes):", upscaled_cfs_accuracy_nb, "\n")
+cat("Downscaled CFS Accuracy (Naive Bayes):", downscaled_cfs_accuracy_nb, "\n")
+
+
+```
+
+
+### Adaboost Performance measures
+
+
+```{r}
+
+# 7. Adaboost
+
+library(rpart)
+library(ada)
+# Library Loading
+
+# Adaboost Model
+adaboost_model = function(train_data, test_data) {
+  
+  # Train AdaBoost model
+  adaboost_model = ada(ClassY ~ ., data = train_data)
+  
+  # Predict on test data
+  predictions_ad = predict(adaboost_model, newdata = test_data)
+  
+  actual = test_data$ClassY
+  predicted = predictions_ad
+  
+  # Create the confusion matrix
+  conf_matrix = table(Actual = actual, Predicted = predicted)
+  
+  # Display the confusion matrix
+  print(conf_matrix)
+  
+  
+  TP <- conf_matrix[2, 2] 
+  TN <- conf_matrix[1, 1] 
+  FP <- conf_matrix[1, 2]
+  FN <- conf_matrix[2, 1]
+  
+  # Calculate and print accuracy
+  accuracy_ad = (TP + TN) / sum(conf_matrix)
+  print(paste("Accuracy:", accuracy_ad))
+  
+  # Print TP, TN, FP, FN
+  print(paste("TP:", TP))
+  print(paste("TN:", TN))
+  print(paste("FP:", FP))
+  print(paste("FN:", FN))
+  
+  TPR = TP / (TP + FN)
+  FPR = FP / (FP + TN)
+  
+  # Calculate Precision and Recall (Recall is the same as TPR)
+  Precision = TP / (TP + FP)
+  Recall = TPR  # Same as TPR
+  
+  # Calculate F-Measure (F1 Score)
+  FMeasure = (2 * Precision * Recall) / (Precision + Recall)
+  
+  
+  ROCArea = 0.5
+  
+  # Matthews Correlation Coefficient (MCC) - Calculation
+  MCC = (TP * TN - FP * FN) / sqrt((TP + FP) * (TP + FN) * (TN + FP) * (TN + FN))
+  
+  # Cohen's Kappa 
+  Kappa = (accuracy_ad - 0.5) / (1 - 0.5)  
+  
+  # Print the calculated metrics
+  cat("TPR (Sensitivity):", TPR, "\n",
+      "FPR:", FPR, "\n",
+      "Precision:", Precision, "\n",
+      "Recall:", Recall, "\n",
+      "F-Measure:", FMeasure, "\n",
+      "ROC Area (Assumed):", ROCArea, "\n",
+      "MCC:", MCC, "\n",
+      "Kappa (Simplified):", Kappa, "\n")
+  
+  return(accuracy_ad)
+}
+# Apply AdaBoost model on selected features
+upscaled_boruta_accuracy_adaboost = adaboost_model(upscaled_boruta, test_set)
+downscaled_boruta_accuracy_adaboost = adaboost_model(downscaled_boruta, test_set)
+upscaled_rf_accuracy_adaboost = adaboost_model(upscaled_rf, test_set)
+downscaled_rf_accuracy_adaboost = adaboost_model(downscaled_rf, test_set)
+upscaled_cfs_accuracy_adaboost = adaboost_model(upscaled_cfs, test_set)
+downscaled_cfs_accuracy_adaboost = adaboost_model(downscaled_cfs, test_set)
+
+
+# Report accuracies
+cat("Upscaled Boruta Accuracy (AdaBoost):", upscaled_boruta_accuracy_adaboost, "\n")
+cat("Downscaled Boruta Accuracy (AdaBoost):", downscaled_boruta_accuracy_adaboost, "\n")
+cat("Upscaled Random Forest Accuracy (AdaBoost):", upscaled_rf_accuracy_adaboost, "\n")
+cat("Downscaled Random Forest Accuracy (AdaBoost):", downscaled_rf_accuracy_adaboost, "\n")
+cat("Upscaled CFS Accuracy (AdaBoost):", upscaled_cfs_accuracy_adaboost, "\n")
+cat("Downscaled CFS Accuracy (AdaBoost):", downscaled_cfs_accuracy_adaboost, "\n")
+
+
+
+```
+
+### Data Mining procedures 
+
+1. Data Analysis (Preliminary Analysis): 
+
+Summary of Data: Provides a high-level overview, including measures of central tendency (mean, median), dispersion (variance, standard deviation), and range for numerical columns, along with counts and frequencies for categorical data. A step, crucial for understanding the dataset's characteristics and guiding further preprocessing.
+
+Missing Values Analysis: Identifying missing values and their proportions helps in deciding how to handle them, ensuring the models trained on this data are not biased or inaccurate due to missing information.
+
+Removal of Columns with ≥ 40% Missing Values: Columns with a large proportion of missing data can introduce bias and variance in predictions. Removing these columns ensures the reliability of the models trained.
+
+2. Data Imputation : 
+
+Numerical Data: Replacing missing values with the median helps maintain the central tendency without being affected by outliers.
+
+Categorical Data: Imputing missing values with the mode (most frequent category) ensures the categorical distributions remain relatively unchanged.
+
+3. Unique Values Analysis : 
+
+Removal of Columns with Unique Values = 1: Such columns do not vary across the dataset, providing no useful information for distinguishing between records in machine learning models.
+
+4. Outliers and Low Variance Filters :
+
+Outliers Identification and Handling: Outliers can skew the data, leading to inaccurate models. Identifying and handling them (e.g., through capping or transformation) is crucial.
+
+Low Variance Columns Removal: Columns with variance below a certain threshold (e.g., 0.1) are not informative enough for models, as they do not significantly vary across the dataset.
+
+5. Correlation Analysis :
+
+Highly Correlated Columns Removal: Highly correlated features provide redundant information, which can lead to multicollinearity problems in certain models, reducing their generalizability.
+
+6. Data Scaling :
+
+Ensures that all features contribute equally to the model's performance by bringing them to a similar scale, important for models sensitive to feature magnitude (e.g., SVM, KNN).
+
+7. Feature Encoding : 
+
+Converts categorical variables into a format that can be provided to ML algorithms to do proper training.
+
+8. Train-Test Split (80-20) :
+
+Separates data into training and testing sets to ensure the model is trained on one subset of the data and evaluated on a separate set, providing a measure of its generalization capability.
+
+9. Balancing the Dataset (Upsampling/Downsampling) :
+
+Balances the classes in the dataset to prevent model bias towards the majority class, essential for classification tasks where class distribution is skewed.
+
+10. Feature Selection Methods :
+
+Boruta, Random Forest, CFS: These methods help identify the most informative features, reducing dimensionality and improving model performance.
+
+
+11. Model Training and Evaluation :
+
+Training various models (Decision Trees, Logistic Regression, SVM, KNN, Random Forest, Naive Bayes, Adaboost) on the selected features to identify the one(s) offering the best performance in terms of accuracy and other metrics (precision, recall, F1 score, etc.).
+
+Significance of Chosen Procedures :
+
+Each of these procedures plays a vital role in the data preparation, feature selection, model training, and evaluation phases of the data mining process. The chosen methods ensure that the data fed into the models is of high quality, relevant, and adequately preprocessed, enhancing the models' ability to learn and make accurate predictions. By systematically addressing issues like missing data, outliers, and irrelevant features, the process significantly increases the likelihood of developing robust, effective models.
+
+### Conclusion
+
+**kNN** achieved the highest accuracy as compared to other models.
+The high accuracy of the kNN model on selected features suggests it is particularly suited to this dataset's characteristics, likely due to its ability to capture complex patterns without overfitting.
+This model's success demonstrates the effectiveness of combining a robust feature selection method with a powerful ensemble learning algorithm, especially when dealing with imbalanced datasets.
+Given its performance, this model is likely to be reliable for predictive tasks within the same domain or on similar datasets, assuming the underlying data distributions do not significantly change.
+
+
