@@ -1,9 +1,12 @@
-# Predictive Disease Machine Learning Model for Effective Health Insurance Management
+# Uncovering-Health-Patterns-and-Risk-Factors-An-Analytical-Study-of-BRFSS-using-R
 
 ## Overview
 
 This project develops a predictive disease model using machine learning to improve health insurance management. The model predicts the likelihood of diseases based on patient data, aiding insurance companies in optimizing plans and enhancing customer service.
 
+### Libraries Used:
+`readr`, `dplyr`, `tidyverse`, `janitor`, `tidyr`, `lubridate`, `skimr`, `ggplot2`, `corrplot`, `DataExplorer`, `stats`, `psych`, `broom`, `caret`, `randomForest`, `e1071`, `xgboost`, `glmnet`, `pROC
+`
 ## Methods
 
 1. **Data Preprocessing**:
